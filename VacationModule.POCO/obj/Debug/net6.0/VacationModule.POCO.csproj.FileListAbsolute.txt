@@ -1,0 +1,14 @@
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\bin\Debug\net6.0\VacationModule.POCO.deps.json
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\bin\Debug\net6.0\VacationModule.POCO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\bin\Debug\net6.0\VacationModule.POCO.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.csproj.AssemblyReference.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.AssemblyInfoInputs.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.AssemblyInfo.cs
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.csproj.CoreCompileInputs.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\refint\VacationModule.POCO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\ref\VacationModule.POCO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\bin\Debug\net6.0\VacationModule.POCO.runtimeconfig.json
+C:\Users\bianca\source\repos\VacationModule\VacationModule.POCO\obj\Debug\net6.0\VacationModule.POCO.genruntimeconfig.cache

@@ -1,0 +1,17 @@
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\bin\Debug\net6.0\VacationModule.DataAccess.deps.json
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\bin\Debug\net6.0\VacationModule.DataAccess.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\bin\Debug\net6.0\VacationModule.DataAccess.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\bin\Debug\net6.0\VacationModule.POCO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\bin\Debug\net6.0\VacationModule.POCO.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.csproj.AssemblyReference.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.AssemblyInfoInputs.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.AssemblyInfo.cs
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.csproj.CopyComplete
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\refint\VacationModule.DataAccess.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\ref\VacationModule.DataAccess.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\bin\Debug\net6.0\VacationModule.DataAccess.runtimeconfig.json
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DataAccess\obj\Debug\net6.0\VacationModule.DataAccess.genruntimeconfig.cache
