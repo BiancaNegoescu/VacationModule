@@ -12,28 +12,86 @@ using VacationModule.Services.Interfaces;
 
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using VacationModule.DTO;
+using AutoMapper;
+using System.Globalization;
 
 namespace VacationModule.Services.Implementations
 {
     public class QueryService: IQueryService
     {
-        public async Task<List<Holiday>> nationalHolidays(string country, int year)
+        private readonly IMapper _mapper;
+
+        public QueryService(IMapper mapper)
         {
-            string QUERY_URL = $"https://api.api-ninjas.com/v1/holidays?country={country}&year={year}&type=national_holiday";
+            _mapper = mapper;
+        }
+
+        public async Task<List<NationalHolidayDTO>> nationalHolidays(string country, int year)
+        {
+            
+            string QUERY_URL_NATIONAL = $"https://api.api-ninjas.com/v1/holidays?country={country}&year={year}&type=national_holiday";
+            string QUERY_URL_ORTHODOX = $"https://api.api-ninjas.com/v1/holidays?country={country}&year={year}&type=national_holiday_orthodox";
 
             var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
 
-
             var httpClient = new HttpClient();
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, QUERY_URL);
-            requestMessage.Headers.Add("X-Api-Key", "WVPB/TbqsDwQkzHUdN69bA==NY4VYIoQrIWjBAlR");
-            var responseExample1 = await httpClient.SendAsync(requestMessage);
-            var json_data = JsonSerializer.Deserialize<List<Holiday>>(await responseExample1.Content.ReadAsStringAsync(), jsonSerializerOptions);
-            Console.WriteLine(responseExample1);
-            return json_data;
+            var requestMessageNational = new HttpRequestMessage(HttpMethod.Get, QUERY_URL_NATIONAL);
+            var requestMessageOrthodox = new HttpRequestMessage(HttpMethod.Get, QUERY_URL_ORTHODOX);
 
-           
 
+            requestMessageNational.Headers.Add("X-Api-Key", "WVPB/TbqsDwQkzHUdN69bA==NY4VYIoQrIWjBAlR");
+            requestMessageOrthodox.Headers.Add("X-Api-Key", "WVPB/TbqsDwQkzHUdN69bA==NY4VYIoQrIWjBAlR");
+
+
+            var responseNational = await httpClient.SendAsync(requestMessageNational);
+            var responseOrthodox = await httpClient.SendAsync(requestMessageOrthodox);
+
+
+            var nationalHolidays = JsonSerializer.Deserialize<List<NationalHoliday>>(await responseNational.Content.ReadAsStringAsync(), jsonSerializerOptions);
+            var nationalHolidaysOrthodox = JsonSerializer.Deserialize<List<NationalHoliday>>(await responseOrthodox.Content.ReadAsStringAsync(), jsonSerializerOptions);
+
+            if (nationalHolidays != null && nationalHolidaysOrthodox != null)
+            {
+                nationalHolidays.AddRange(nationalHolidaysOrthodox);
+
+            } else
+            {
+                throw new ArgumentException("Holiday API failed fetching!");
+            }
+
+            List<NationalHolidayDTO> nationalHolidayDTOs = new List<NationalHolidayDTO>();
+
+            for(int i = 0; i < nationalHolidays.Count; i++)
+            {
+                NationalHolidayDTO nationalHoliday = _mapper.Map<NationalHoliday, NationalHolidayDTO>(nationalHolidays[i]);
+                DateTime date = stringToDate(nationalHolidays[i].date);
+                nationalHoliday.date = date;
+                nationalHolidayDTOs.Add(nationalHoliday);
+            }
+            return nationalHolidayDTOs;
+        }
+
+        public async Task<List<DateTime>> holidayList()
+        {
+            List<NationalHolidayDTO> nationalHolidaysDTO = await nationalHolidays("RO", 2023);
+
+
+            List<DateTime> holidaysList = new List<DateTime>();
+            nationalHolidaysDTO.ForEach(holiday =>
+            {
+                holidaysList.Add(holiday.date);
+            });
+            return holidaysList;
+        }
+
+        public DateTime stringToDate(string dateAsString)
+        {
+            string format = "yyyy-MM-dd";
+            CultureInfo provider = CultureInfo.InvariantCulture;
+
+            DateTime date = DateTime.ParseExact(dateAsString, format, provider);
+            return date;
         }
     }
 }

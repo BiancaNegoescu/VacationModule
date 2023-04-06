@@ -16,6 +16,5 @@ namespace VacationModule.Services.Interfaces
 
         public Guid GetMe();
 
-        public String GetRole();
     }
 }

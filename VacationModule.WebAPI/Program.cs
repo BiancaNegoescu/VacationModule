@@ -53,13 +53,12 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddTransient<IRegisterService, RegisterService>();
 builder.Services.AddTransient<IQueryService, QueryService>();
-
-
-
+builder.Services.AddTransient<IVacationRequestService, VacationRequestService>();
 
 
 // Mappings
 builder.Services.AddAutoMapper(typeof(UserProfile));
+builder.Services.AddAutoMapper(typeof(HolidayProfile));
 
 
 var app = builder.Build();

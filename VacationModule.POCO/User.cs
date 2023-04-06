@@ -15,5 +15,8 @@
 
         public string Role { get; set; } = null!;
 
+        //one-to-many relationship with VacationRequest
+        public List<VacationRequest>? VacationRequests { get; set; }
+
     }
 }

@@ -73,8 +73,6 @@ namespace VacationModule.Services.Implementations
 
         }
 
-       
-
         public Guid GetMe()
         {
             var result = String.Empty;
@@ -92,21 +90,6 @@ namespace VacationModule.Services.Implementations
             return guid;
         }
 
-        public String GetRole()
-        {
-            var result = String.Empty;
-            if (_httpContextAccessor.HttpContext != null)
-            {
-                result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
-
-            }
-            if (result == null)
-            {
-                throw new ArgumentException("Claim is null");
-            }
-
-            return result;
-        }
 
 
 

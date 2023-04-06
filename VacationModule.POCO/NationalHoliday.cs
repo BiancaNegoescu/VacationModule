@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VacationModule.POCO
 {
-    public class Holiday
+    public class NationalHoliday
     {
         public String country {  get; set; }
         public String iso { get; set; }

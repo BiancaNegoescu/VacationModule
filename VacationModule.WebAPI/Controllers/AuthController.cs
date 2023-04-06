@@ -14,28 +14,24 @@ namespace VacationModule.WebAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly VacationModuleContext _dbContext;
         private readonly IUserService _userService;
-        private readonly IQueryService _queryService;
 
-        public AuthController(IConfiguration configuration, VacationModuleContext dbContext, IUserService userService, IQueryService queryService)
+        public AuthController(IConfiguration configuration, VacationModuleContext dbContext, IUserService userService)
         {
             _configuration = configuration;
             _dbContext = dbContext;
             _userService = userService;
-            _queryService = queryService;
   
         }
 
         [HttpPost("register")]
         public ActionResult<User> Register(RegisterDTO request)
         {
-
             _userService.Register(request);
-
             return Ok();
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login(LoginDTO request)
+        public ActionResult<string> Login(LoginDTO request) 
         {
             string token = _userService.Login(request);
             if (token != null)
@@ -44,13 +40,6 @@ namespace VacationModule.WebAPI.Controllers
             }
             return BadRequest();
 
-        }
-
-        [HttpGet("getHolidays")]
-        public async Task<ActionResult> getHolidaysAsync()
-        {
-            List<Holiday> data =await _queryService.nationalHolidays("RO", 2023);
-            return Ok(data);
         }
 
     }
