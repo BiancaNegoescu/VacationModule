@@ -12,8 +12,6 @@ namespace VacationModule.Services.Interfaces
         public Task makeVacationRequest(FormVacationRequestDTO request);
         public Task<List<DateTime>> getOnlyWorkingDays(List<DateTime> requestedDates);
 
-        public Task<List<DateTime>> getDaysWithoutHolidays(FormVacationRequestDTO request);
-
         public List<VacationRequestDTO> getMyRequests();
     }
 }

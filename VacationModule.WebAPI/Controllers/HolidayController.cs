@@ -48,12 +48,5 @@ namespace VacationModule.WebAPI.Controllers
             return Ok(myRequests);
         }
 
-        // FOR TESTING
-        [HttpPost("getRequestWithoutHolidays"), Authorize]
-        public async Task<ActionResult> getRequestWithoutHolidays(FormVacationRequestDTO request)
-        {
-            List<DateTime> list = await _vacationRequestService.getDaysWithoutHolidays(request);
-            return Ok(list);
-        }
     }
 }

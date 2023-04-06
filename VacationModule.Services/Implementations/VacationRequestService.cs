@@ -107,34 +107,5 @@ namespace VacationModule.Services.Implementations
             return requestsDTO;
         }
 
-
-        // FOR TESTING
-        public async Task<List<DateTime>> getDaysWithoutHolidays(FormVacationRequestDTO request)
-        {
-            int startDay = request.startDay;
-            int startMonth = request.startMonth;
-            int startYear = request.startYear;
-            int endDay = request.endDay;
-            int endMonth = request.endMonth;
-            int endYear = request.endYear;
-
-            DateTime startDate = new DateTime(startYear, startMonth, startDay);
-            DateTime endDate = new DateTime(endYear, endMonth, endDay);
-
-            var requestedDays = new List<DateTime>();
-
-
-            for (var date = startDate; date <= endDate; date = date.AddDays(1))
-            {
-                requestedDays.Add(date);
-                // vacationRequest.requestedDays.Add(date);
-            }
-
-            requestedDays = await getOnlyWorkingDays(requestedDays);
-            return requestedDays;
-        }
-
-
-
     }
 }
