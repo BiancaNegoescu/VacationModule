@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationModule.WebAPI", "VacationModule.WebAPI\VacationModule.WebAPI.csproj", "{8015F6FC-3C41-4AF1-A0AD-4E6B9A32504B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationModule.WebAPI", "VacationModule.WebAPI\VacationModule.WebAPI.csproj", "{8015F6FC-3C41-4AF1-A0AD-4E6B9A32504B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationModule.DataAccess", "VacationModule.DataAccess\VacationModule.DataAccess.csproj", "{7FCBB58A-FA9E-4006-A68B-278D480A1F18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationModule.DataAccess", "VacationModule.DataAccess\VacationModule.DataAccess.csproj", "{7FCBB58A-FA9E-4006-A68B-278D480A1F18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationModule.DTO", "VacationModule.DTO\VacationModule.DTO.csproj", "{72DA1275-A6D5-4AAA-8EBD-102A1F907E8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationModule.DTO", "VacationModule.DTO\VacationModule.DTO.csproj", "{72DA1275-A6D5-4AAA-8EBD-102A1F907E8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationModule.POCO", "VacationModule.POCO\VacationModule.POCO.csproj", "{E671F751-7356-4395-8413-5A6793D98E9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationModule.POCO", "VacationModule.POCO\VacationModule.POCO.csproj", "{E671F751-7356-4395-8413-5A6793D98E9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationModule.Services", "VacationModule.Services\VacationModule.Services.csproj", "{04EC896B-DFDA-4618-AF6F-4A9974CC2D10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VacationModule.Services", "VacationModule.Services\VacationModule.Services.csproj", "{04EC896B-DFDA-4618-AF6F-4A9974CC2D10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest", "ApiTest\ApiTest.csproj", "{13513E98-606E-416A-B4A0-5EE35BF9A8E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{04EC896B-DFDA-4618-AF6F-4A9974CC2D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04EC896B-DFDA-4618-AF6F-4A9974CC2D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04EC896B-DFDA-4618-AF6F-4A9974CC2D10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13513E98-606E-416A-B4A0-5EE35BF9A8E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13513E98-606E-416A-B4A0-5EE35BF9A8E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13513E98-606E-416A-B4A0-5EE35BF9A8E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13513E98-606E-416A-B4A0-5EE35BF9A8E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

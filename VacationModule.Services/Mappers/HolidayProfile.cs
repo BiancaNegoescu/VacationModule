@@ -22,8 +22,15 @@ namespace VacationModule.Services.Mappers
                 .ForMember(dest => dest.holidayType, src => src.MapFrom(x => x.type));
 
             CreateMap<VacationRequest, VacationRequestDTO>()
-                .ForMember(dest => dest.requestedDays, src => src.MapFrom(x => x.requestedDays));
-               
+                .ForMember(dest => dest.requestedDays, src => src.MapFrom(x => x.requestedDays))
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id));
+
+            CreateMap<VacationRequest, AdminRequestsDTO>()
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id))
+                .ForMember(dest => dest.requestedDays, src => src.MapFrom(x => x.requestedDays))
+                .ForMember(dest => dest.UserId, src => src.MapFrom(x => x.UserId));
+
+
         }
     }
 }

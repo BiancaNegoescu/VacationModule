@@ -11,14 +11,10 @@ namespace VacationModule.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly VacationModuleContext _dbContext;
         private readonly IUserService _userService;
 
-        public AuthController(IConfiguration configuration, VacationModuleContext dbContext, IUserService userService)
+        public AuthController(IUserService userService)
         {
-            _configuration = configuration;
-            _dbContext = dbContext;
             _userService = userService;
   
         }

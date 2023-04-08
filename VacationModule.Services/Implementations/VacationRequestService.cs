@@ -30,12 +30,14 @@ namespace VacationModule.Services.Implementations
             _queryService = queryService;
         }
 
-        public async Task makeVacationRequest(FormVacationRequestDTO request)
+        public async Task<VacationRequestDTO> makeVacationRequest(FormVacationRequestDTO request)
         {
+            /*
             VacationRequest vacationRequest = new VacationRequest();
             vacationRequest.requestedDays = new List<DateTime>();
             Guid userId = _userService.GetMe();
             vacationRequest.UserId = userId;
+            */
 
             int startDay = request.startDay;
             int startMonth = request.startMonth;
@@ -49,7 +51,6 @@ namespace VacationModule.Services.Implementations
 
             List<DateTime> requestedDays = new List<DateTime>();
 
-
             for (var date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 requestedDays.Add(date);
@@ -57,11 +58,28 @@ namespace VacationModule.Services.Implementations
 
             requestedDays = await getOnlyWorkingDays(requestedDays);
 
-            vacationRequest.requestedDays = requestedDays;
+            int availableDays = getAvailableDays();
 
-            _dbContext.VacationRequests.Add(vacationRequest);
-            _dbContext.SaveChanges();
-       }
+            bool eligible = eligibleForRequest(availableDays, requestedDays.Count);
+            if (eligible)
+            {
+                VacationRequest vacationRequest = new VacationRequest();
+                vacationRequest.requestedDays = new List<DateTime>();
+                vacationRequest.requestedDays = requestedDays;
+                Guid userId = _userService.GetMe();
+                vacationRequest.UserId = userId;
+
+                _dbContext.VacationRequests.Add(vacationRequest);
+                _dbContext.SaveChanges();
+
+                VacationRequestDTO newRequest = _mapper.Map<VacationRequest, VacationRequestDTO>(vacationRequest);
+
+                return newRequest;
+            } else
+            {
+                throw new ArgumentException("You do not have left as many days as you requested!");
+            }
+        }
 
        
         public async Task<List<DateTime>> getOnlyWorkingDays(List<DateTime> requestedDates)
@@ -107,5 +125,100 @@ namespace VacationModule.Services.Implementations
             return requestsDTO;
         }
 
+        public async Task<VacationRequestDTO> modifyRequest(ModifyRequestDTO request)
+        {
+            Guid myId = _userService.GetMe();
+
+            VacationRequest? vacationRequest = _dbContext.VacationRequests.FirstOrDefault(x => x.Id == request.Id);
+            if (vacationRequest == null)
+            {
+                throw new ArgumentException("There does not exist a request with introduced ID!");
+            }
+            if (vacationRequest.UserId != myId)
+            {
+                throw new ArgumentException("You do not have any request with introduced ID!");
+            }
+            
+            int startDay = request.startDay;
+            int startMonth = request.startMonth;
+            int startYear = request.startYear;
+            int endDay = request.endDay;
+            int endMonth = request.endMonth;
+            int endYear = request.endYear;
+
+            DateTime startDate = new DateTime(startYear, startMonth, startDay);
+            DateTime endDate = new DateTime(endYear, endMonth, endDay);
+
+            List<DateTime> requestedDays = new List<DateTime>();
+
+            for (var date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                requestedDays.Add(date);
+            }
+
+            requestedDays = await getOnlyWorkingDays(requestedDays);
+
+
+            bool eligible = eligibleForModifying(vacationRequest, requestedDays.Count);
+            if(eligible)
+            {
+                // delete the days from old request
+                vacationRequest.requestedDays.Clear();
+                vacationRequest.requestedDays = requestedDays;
+
+                _dbContext.SaveChanges();
+
+                VacationRequestDTO newRequest = _mapper.Map<VacationRequest, VacationRequestDTO>(vacationRequest);
+
+                return newRequest;
+
+            } else
+            {
+                throw new ArgumentException("You do not have left as many days as you requested!");
+            }
+        }
+
+        public List<AdminRequestsDTO> getAllRequests()
+        {
+            List<VacationRequest> requests = _dbContext.VacationRequests.ToList();
+            List<AdminRequestsDTO> requestDTOs = new();
+            for(int i = 0; i < requests.Count; i++)
+            {
+                AdminRequestsDTO requestDTO = _mapper.Map<VacationRequest, AdminRequestsDTO>(requests[i]);
+                requestDTOs.Add(requestDTO);
+
+            }
+            return requestDTOs;
+        }
+
+        public int getAvailableDays()
+        {
+            List<VacationRequestDTO> requests = getMyRequests();
+            int unavailableDays = requests.Aggregate(0, (acc, req) => acc + req.requestedDays.Count);
+            int remainedDays = AvailableDaysPerYear.Amount - unavailableDays;
+            return remainedDays;
+        }
+
+        public bool eligibleForRequest(int remaindedDays, int nrOfDaysRequested)
+        {
+            if (remaindedDays < nrOfDaysRequested)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool eligibleForModifying(VacationRequest vacationRequest, int nrOfDaysRequested)
+        {
+            int remaindedDays = getAvailableDays();
+            int daysInRequest = vacationRequest.requestedDays.Count;
+            int totalAvailableDays = remaindedDays + daysInRequest;
+            if (nrOfDaysRequested > totalAvailableDays)
+            {
+                return false;
+            }
+            return true;
+
+        }
     }
 }

@@ -35,10 +35,10 @@ namespace VacationModule.WebAPI.Controllers
         }
 
         [HttpPost("requestHoliday"), Authorize]
-        public async Task<ActionResult> requestHolidayAsync(FormVacationRequestDTO request)
+        public async Task<ActionResult> requestHoliday(FormVacationRequestDTO request)
         {
-            await _vacationRequestService.makeVacationRequest(request);
-            return Ok();
+            VacationRequestDTO myRequest = await _vacationRequestService.makeVacationRequest(request);
+            return Ok(myRequest);
         }
 
         [HttpGet("myVacationRequests"), Authorize]
@@ -46,6 +46,27 @@ namespace VacationModule.WebAPI.Controllers
         {
             List<VacationRequestDTO> myRequests = _vacationRequestService.getMyRequests();
             return Ok(myRequests);
+        }
+
+        [HttpPut("modifyRequest"), Authorize]
+        public async Task<ActionResult> modifyRequest(ModifyRequestDTO request)
+        {
+            VacationRequestDTO newRequest = await _vacationRequestService.modifyRequest(request);
+            return Ok(newRequest);
+        }
+
+        [HttpGet("allRequests"), Authorize(Roles = "admin")]
+        public ActionResult allRequests()
+        {
+            List<AdminRequestsDTO> requests = _vacationRequestService.getAllRequests();
+            return Ok(requests);
+        }
+
+        [HttpGet("myAvailableDays"), Authorize]
+        public ActionResult getAvailableDays()
+        {
+            int availableDays = _vacationRequestService.getAvailableDays();
+            return Ok(availableDays);
         }
 
     }
