@@ -70,7 +70,8 @@ namespace VacationModule.DataAccess.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<List<DateTime>>("requestedDays")
-                        .HasColumnType("timestamp with time zone[]");
+                        .IsRequired()
+                        .HasColumnType("timestamp without time zone[]");
 
                     b.HasKey("Id");
 

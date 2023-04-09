@@ -1,0 +1,14 @@
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\bin\Release\net6.0\VacationModule.DTO.deps.json
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\bin\Release\net6.0\VacationModule.DTO.runtimeconfig.json
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\bin\Release\net6.0\VacationModule.DTO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\bin\Release\net6.0\VacationModule.DTO.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.csproj.AssemblyReference.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.AssemblyInfoInputs.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.AssemblyInfo.cs
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.csproj.CoreCompileInputs.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\refint\VacationModule.DTO.dll
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.pdb
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\VacationModule.DTO.genruntimeconfig.cache
+C:\Users\bianca\source\repos\VacationModule\VacationModule.DTO\obj\Release\net6.0\ref\VacationModule.DTO.dll
