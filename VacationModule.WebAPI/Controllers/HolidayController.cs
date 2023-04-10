@@ -21,41 +21,75 @@ namespace VacationModule.WebAPI.Controllers
             _vacationRequestService = vacationRequestService;
         }
 
-        [HttpGet("getHolidays"), Authorize]
-        public async Task<ActionResult> getHolidays ()
+        [HttpGet("getHolidays"), Authorize(Roles = "admin,employee")]
+        public async Task<ActionResult> getHolidays()
         {
             int year = Year.CurrentYear;
-            List<NationalHolidayDTO> nationalHolidays = await _queryService.nationalHolidays(year);
-            return Ok(nationalHolidays);
+            try
+            {
+                List<NationalHolidayDTO> nationalHolidays = await _queryService.nationalHolidays(year);
+                return Ok(nationalHolidays);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
-        [HttpGet("holidayList")]
+        [HttpGet("holidayList"), Authorize(Roles = "admin,employee")]
         public async Task<ActionResult> getHolidayList()
         {
             int year = Year.CurrentYear;
-            List<DateTime> list = await _queryService.holidayList(year);
-            return Ok(list);
+            try
+            {
+                List<DateTime> list = await _queryService.holidayList(year);
+                return Ok(list);
+            } catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+
         }
 
-        [HttpPost("requestHoliday"), Authorize]
+        [HttpPost("requestHoliday"), Authorize(Roles = "admin,employee")]
         public async Task<ActionResult> requestHoliday(FormVacationRequestDTO request)
         {
-            VacationRequestDTO myRequest = await _vacationRequestService.makeVacationRequest(request);
+            VacationRequestDTO myRequest;
+            try
+            {
+                myRequest = await _vacationRequestService.makeVacationRequest(request);
+            } catch(ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
             return Ok(myRequest);
         }
 
-        [HttpGet("myVacationRequests"), Authorize]
+        [HttpGet("myVacationRequests"), Authorize(Roles = "admin,employee")]
         public ActionResult myVacationRequests()
         {
-            List<VacationRequestDTO> myRequests = _vacationRequestService.getMyRequests();
-            return Ok(myRequests);
+            try
+            {
+                List<VacationRequestDTO> myRequests = _vacationRequestService.getMyRequests();
+                return Ok(myRequests);
+            } catch(ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
-        [HttpPut("modifyRequest"), Authorize]
+        [HttpPut("modifyRequest"), Authorize(Roles = "admin,employee")]
         public async Task<ActionResult> modifyRequest(ModifyRequestDTO request)
         {
-            VacationRequestDTO newRequest = await _vacationRequestService.modifyRequest(request);
-            return Ok(newRequest);
+            try
+            {
+                VacationRequestDTO newRequest = await _vacationRequestService.modifyRequest(request);
+                return Ok(newRequest);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpGet("allRequests"), Authorize(Roles = "admin")]
@@ -65,11 +99,26 @@ namespace VacationModule.WebAPI.Controllers
             return Ok(requests);
         }
 
-        [HttpGet("myAvailableDays"), Authorize]
+        [HttpGet("myAvailableDays"), Authorize(Roles = "admin,employee")]
         public ActionResult getAvailableDays(int year)
         {
-            int availableDays = _vacationRequestService.getAvailableDays(year);
-            return Ok(availableDays);
+            int availableDays;
+            try
+            {
+                if (year != Year.CurrentYear)
+                {
+                    availableDays = _vacationRequestService.getAvailableDaysNextYear(year);
+                }
+                else
+                {
+                    availableDays = _vacationRequestService.getAvailableDays(year);
+                }
+                return Ok(availableDays);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
     }

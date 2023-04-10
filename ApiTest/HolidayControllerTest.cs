@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VacationModule.DTO;
+using VacationModule.Services.Constants;
 using VacationModule.Services.Interfaces;
 using VacationModule.WebAPI.Controllers;
 
@@ -35,7 +36,7 @@ namespace ApiTest
         {
             
             var holidayList = _fixture.CreateMany<NationalHolidayDTO>(15).ToList();
-            _queryServiceMock.Setup(service => service.nationalHolidays("RO", 2023)).ReturnsAsync(holidayList);
+            _queryServiceMock.Setup(service => service.nationalHolidays(2023)).ReturnsAsync(holidayList);
 
             _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
 
@@ -46,18 +47,44 @@ namespace ApiTest
             Assert.AreEqual(200, obj?.StatusCode);
         }
 
+        [TestMethod]
+        public async Task Get_Holidays_Error()
+        {
+            _queryServiceMock.Setup(service => service.nationalHolidays(2023)).ThrowsAsync(new ArgumentException());
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+
+            var result = await _controller.getHolidays();
+
+            var obj = result as ObjectResult;
+
+            Assert.AreEqual(500, obj?.StatusCode);
+        }
+
+
 
         [TestMethod]
         public async Task Get_HolidayList_OK()
         {
             var holidayList = _fixture.CreateMany<DateTime>(15).ToList();
-            _queryServiceMock.Setup(service => service.holidayList()).ReturnsAsync(holidayList);
+            _queryServiceMock.Setup(service => service.holidayList(2023)).ReturnsAsync(holidayList);
             _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
 
             var result = await _controller.getHolidayList();
             var obj = result as ObjectResult;
             Assert.AreEqual(200, obj?.StatusCode);
         }
+
+        [TestMethod]
+        public async Task Get_HolidayList_Error()
+        {
+            _queryServiceMock.Setup(service => service.holidayList(2023)).ThrowsAsync(new ArgumentException());
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+
+            var result = await _controller.getHolidayList();
+            var obj = result as ObjectResult;
+            Assert.AreEqual(500, obj?.StatusCode);
+        }
+
 
         [TestMethod]
         public void Get_MyRequests_Ok()
@@ -72,6 +99,17 @@ namespace ApiTest
         }
 
         [TestMethod]
+        public void Get_MyRequests_Error()
+        {
+            _requestServiceMock.Setup(service => service.getMyRequests()).Throws(new ArgumentException());
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+
+            var result = _controller.myVacationRequests();
+            var obj = result as ObjectResult;
+            Assert.AreEqual(500, obj?.StatusCode);
+        }
+
+        [TestMethod]
         public void Get_AllRequests_Ok()
         {
             var allRequsts = _fixture.CreateMany<AdminRequestsDTO>(100).ToList();
@@ -82,6 +120,7 @@ namespace ApiTest
             var obj = result as ObjectResult;
             Assert.AreEqual(200, obj?.StatusCode);
         }
+
 
         [TestMethod]
         public async Task Post_Request_Ok()
@@ -104,7 +143,26 @@ namespace ApiTest
             _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
             var result = await _controller.requestHoliday(form);
             var obj =  result as ObjectResult;
-            Assert.AreEqual(200, obj.StatusCode);
+            Assert.AreEqual(200, obj?.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task Post_Request_Error()
+        {
+            FormVacationRequestDTO form = new FormVacationRequestDTO()
+            {
+                startDay = 1,
+                startMonth = 1,
+                startYear = 2023,
+                endDay = 5,
+                endMonth = 1,
+                endYear = 2023
+            };
+            _requestServiceMock.Setup(service => service.makeVacationRequest(form)).ThrowsAsync(new ArgumentException());
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+            var result = await _controller.requestHoliday(form);
+            var obj = result as ObjectResult;
+            Assert.AreEqual(500, obj?.StatusCode);
         }
 
         [TestMethod]
@@ -129,9 +187,50 @@ namespace ApiTest
             _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
             var result = await _controller.modifyRequest(form);
             var obj = result as ObjectResult;
-            Assert.AreEqual(200, obj.StatusCode);
+            Assert.AreEqual(200, obj?.StatusCode);
         }
 
+        [TestMethod]
+        public async Task Put_ModifyRequest_Error()
+        {
+            ModifyRequestDTO form = new ModifyRequestDTO()
+            {
+                Id = 1,
+                startDay = 1,
+                startMonth = 1,
+                startYear = 2023,
+                endDay = 5,
+                endMonth = 1,
+                endYear = 2023
+            };
+            _requestServiceMock.Setup(service => service.modifyRequest(form)).ThrowsAsync(new ArgumentException());
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+            var result = await _controller.modifyRequest(form);
+            var obj = result as ObjectResult;
+            Assert.AreEqual(500, obj?.StatusCode);
+        }
+
+        [TestMethod]
+        public void Get_AvailableDays_OK()
+        {
+            int availableDays = _fixture.Create<int>();
+            _requestServiceMock.Setup(service => service.getAvailableDays(Year.CurrentYear)).Returns(availableDays);
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+
+            var result = _controller.getAvailableDays(Year.CurrentYear);
+            var obj = result as ObjectResult;
+            Assert.AreEqual(200, obj?.StatusCode);
+        }
+
+        [TestMethod]
+        public void Get_AvailableDays_Error()
+        {
+            _requestServiceMock.Setup(service => service.getAvailableDays(Year.CurrentYear)).Throws(new ArgumentException());
+            _controller = new HolidayController(_queryServiceMock.Object, _requestServiceMock.Object);
+            var result = _controller.getAvailableDays(Year.CurrentYear);
+            var obj = result as ObjectResult;
+            Assert.AreEqual(500, obj?.StatusCode);
+        }
 
     }
 }

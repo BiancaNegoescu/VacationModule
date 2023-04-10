@@ -64,12 +64,12 @@ builder.Services.AddAutoMapper(typeof(HolidayProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-} else
+}
+else
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -78,6 +78,8 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
 }
+
+
 
 app.UseHttpsRedirection();
 

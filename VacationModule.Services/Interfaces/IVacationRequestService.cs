@@ -21,6 +21,8 @@ namespace VacationModule.Services.Interfaces
         public int getAvailableDays(int year);
 
         public bool eligibleForRequest(int remaindedDays, int nrOfDaysRequested);
+        public int getAvailableDaysNextYear(int year);
+
 
 
 

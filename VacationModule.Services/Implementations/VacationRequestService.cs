@@ -33,7 +33,10 @@ namespace VacationModule.Services.Implementations
 
         public async Task<VacationRequestDTO> makeVacationRequest(FormVacationRequestDTO request)
         {
-            
+            if(request.startYear != request.endYear)
+            {
+                throw new ArgumentException("You can not make request for both years; make a separate requests for each year!");
+            }
 
             int startDay = request.startDay;
             int startMonth = request.startMonth;
@@ -41,7 +44,6 @@ namespace VacationModule.Services.Implementations
             int endDay = request.endDay;
             int endMonth = request.endMonth;
             int endYear = request.endYear;
-            int availableDays = -1;
 
             DateTime startDate = new DateTime(startYear, startMonth, startDay);
             DateTime endDate = new DateTime(endYear, endMonth, endDay);
@@ -55,11 +57,13 @@ namespace VacationModule.Services.Implementations
             
             requestedDays = await getOnlyWorkingDays(requestedDays, startYear);
 
+            int availableDays;
             if (request.startYear != Year.CurrentYear)
             {
                 availableDays = getAvailableDaysNextYear(startYear);
 
-            } else
+            }
+            else
             {
                 availableDays = getAvailableDays(startYear);
 
@@ -116,11 +120,6 @@ namespace VacationModule.Services.Implementations
             Guid myId = _userService.GetMe();
             List<VacationRequest> myRequests = _dbContext.VacationRequests.Where(x => x.UserId == myId).ToList();
             List<VacationRequestDTO> requestsDTO = new();
-
-            if (myRequests.Count == 0)
-            {
-                throw new Exception("You do not have any vacation requests!");
-            }
 
             for (int i = 0; i < myRequests.Count; i++)
             {
