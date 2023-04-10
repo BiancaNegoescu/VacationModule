@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Server.HttpSys;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,12 +33,7 @@ namespace VacationModule.Services.Implementations
 
         public async Task<VacationRequestDTO> makeVacationRequest(FormVacationRequestDTO request)
         {
-            /*
-            VacationRequest vacationRequest = new VacationRequest();
-            vacationRequest.requestedDays = new List<DateTime>();
-            Guid userId = _userService.GetMe();
-            vacationRequest.UserId = userId;
-            */
+            
 
             int startDay = request.startDay;
             int startMonth = request.startMonth;
@@ -45,6 +41,7 @@ namespace VacationModule.Services.Implementations
             int endDay = request.endDay;
             int endMonth = request.endMonth;
             int endYear = request.endYear;
+            int availableDays = -1;
 
             DateTime startDate = new DateTime(startYear, startMonth, startDay);
             DateTime endDate = new DateTime(endYear, endMonth, endDay);
@@ -55,12 +52,21 @@ namespace VacationModule.Services.Implementations
             {
                 requestedDays.Add(date);
             }
+            
+            requestedDays = await getOnlyWorkingDays(requestedDays, startYear);
 
-            requestedDays = await getOnlyWorkingDays(requestedDays);
+            if (request.startYear != Year.CurrentYear)
+            {
+                availableDays = getAvailableDaysNextYear(startYear);
 
-            int availableDays = getAvailableDays();
+            } else
+            {
+                availableDays = getAvailableDays(startYear);
+
+            }
 
             bool eligible = eligibleForRequest(availableDays, requestedDays.Count);
+               
             if (eligible)
             {
                 VacationRequest vacationRequest = new VacationRequest();
@@ -82,10 +88,10 @@ namespace VacationModule.Services.Implementations
         }
 
        
-        public async Task<List<DateTime>> getOnlyWorkingDays(List<DateTime> requestedDates)
+        public async Task<List<DateTime>> getOnlyWorkingDays(List<DateTime> requestedDates, int year)
         {
 
-            List<DateTime> holidaysList = await _queryService.holidayList();
+            List<DateTime> holidaysList = await _queryService.holidayList(year);
             if (holidaysList != null)
             {
                 for (int i = 0; i < holidaysList.Count; i++)
@@ -127,6 +133,7 @@ namespace VacationModule.Services.Implementations
 
         public async Task<VacationRequestDTO> modifyRequest(ModifyRequestDTO request)
         {
+           
             Guid myId = _userService.GetMe();
 
             VacationRequest? vacationRequest = _dbContext.VacationRequests.FirstOrDefault(x => x.Id == request.Id);
@@ -156,10 +163,10 @@ namespace VacationModule.Services.Implementations
                 requestedDays.Add(date);
             }
 
-            requestedDays = await getOnlyWorkingDays(requestedDays);
+            requestedDays = await getOnlyWorkingDays(requestedDays, startYear);
 
 
-            bool eligible = eligibleForModifying(vacationRequest, requestedDays.Count);
+            bool eligible = eligibleForModifying(vacationRequest, requestedDays.Count, startYear);
             if(eligible)
             {
                 // delete the days from old request
@@ -191,13 +198,46 @@ namespace VacationModule.Services.Implementations
             return requestDTOs;
         }
 
-        public int getAvailableDays()
+        public int getAvailableDays(int year)
         {
             List<VacationRequestDTO> requests = getMyRequests();
-            int unavailableDays = requests.Aggregate(0, (acc, req) => acc + req.requestedDays.Count);
+            int prevYear = year - 1;
+            int unavailableDays = 0;
+            for (int i = 0; i < requests.Count; i++)
+            {
+                for(int j = 0; j < requests[i].requestedDays.Count; j++)
+                {
+                    int yearOfRequest = requests[i].requestedDays[j].Year;
+                    if (yearOfRequest == prevYear || yearOfRequest == year)
+                    {
+                        unavailableDays++;
+                    }
+                }
+            }
+            int remainedDays = 2 * AvailableDaysPerYear.Amount - unavailableDays;
+            return remainedDays;
+        }
+
+        public int getAvailableDaysNextYear(int year)
+        {
+            List<VacationRequestDTO> requests = getMyRequests();
+            int unavailableDays = 0;
+            for (int i = 0; i < requests.Count; i++)
+            {
+                for (int j = 0; j < requests[i].requestedDays.Count; j++)
+                {
+                    int yearOfRequest = requests[i].requestedDays[j].Year;
+                    if (yearOfRequest == year)
+                    {
+                        unavailableDays++;
+                    }
+                }
+            }
             int remainedDays = AvailableDaysPerYear.Amount - unavailableDays;
             return remainedDays;
         }
+
+
 
         public bool eligibleForRequest(int remaindedDays, int nrOfDaysRequested)
         {
@@ -208,9 +248,16 @@ namespace VacationModule.Services.Implementations
             return true;
         }
 
-        public bool eligibleForModifying(VacationRequest vacationRequest, int nrOfDaysRequested)
+        public bool eligibleForModifying(VacationRequest vacationRequest, int nrOfDaysRequested, int year)
         {
-            int remaindedDays = getAvailableDays();
+            int remaindedDays;
+            if (year == Year.CurrentYear)
+            {
+                remaindedDays = getAvailableDays(year);
+            } else
+            {
+                remaindedDays = getAvailableDaysNextYear(year);
+            }
             int daysInRequest = vacationRequest.requestedDays.Count;
             int totalAvailableDays = remaindedDays + daysInRequest;
             if (nrOfDaysRequested > totalAvailableDays)
@@ -220,5 +267,6 @@ namespace VacationModule.Services.Implementations
             return true;
 
         }
+
     }
 }

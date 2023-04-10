@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VacationModule.DTO;
 using VacationModule.POCO;
+using VacationModule.Services.Constants;
 using VacationModule.Services.Interfaces;
 
 namespace VacationModule.WebAPI.Controllers
@@ -23,14 +24,16 @@ namespace VacationModule.WebAPI.Controllers
         [HttpGet("getHolidays"), Authorize]
         public async Task<ActionResult> getHolidays ()
         {
-            List<NationalHolidayDTO> nationalHolidays = await _queryService.nationalHolidays("RO", 2023);
+            int year = Year.CurrentYear;
+            List<NationalHolidayDTO> nationalHolidays = await _queryService.nationalHolidays(year);
             return Ok(nationalHolidays);
         }
 
         [HttpGet("holidayList")]
         public async Task<ActionResult> getHolidayList()
         {
-            List<DateTime> list = await _queryService.holidayList();
+            int year = Year.CurrentYear;
+            List<DateTime> list = await _queryService.holidayList(year);
             return Ok(list);
         }
 
@@ -63,9 +66,9 @@ namespace VacationModule.WebAPI.Controllers
         }
 
         [HttpGet("myAvailableDays"), Authorize]
-        public ActionResult getAvailableDays()
+        public ActionResult getAvailableDays(int year)
         {
-            int availableDays = _vacationRequestService.getAvailableDays();
+            int availableDays = _vacationRequestService.getAvailableDays(year);
             return Ok(availableDays);
         }
 

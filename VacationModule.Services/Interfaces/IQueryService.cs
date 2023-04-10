@@ -10,8 +10,8 @@ namespace VacationModule.Services.Interfaces
 {
     public interface IQueryService
     {
-        public Task<List<NationalHolidayDTO>> nationalHolidays(string country, int year);
+        public Task<List<NationalHolidayDTO>> nationalHolidays(int year);
         public DateTime stringToDate(string dateAsString);
-        public Task<List<DateTime>> holidayList();
+        public Task<List<DateTime>> holidayList(int year);
     }
 }

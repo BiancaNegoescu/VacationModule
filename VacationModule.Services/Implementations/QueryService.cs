@@ -15,6 +15,8 @@ using System.Net.Http.Json;
 using VacationModule.DTO;
 using AutoMapper;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using VacationModule.Services.Constants;
 
 namespace VacationModule.Services.Implementations
 {
@@ -27,11 +29,11 @@ namespace VacationModule.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<List<NationalHolidayDTO>> nationalHolidays(string country, int year)
+        public async Task<List<NationalHolidayDTO>> nationalHolidays(int year)
         {
-            
-            string QUERY_URL_NATIONAL = $"https://api.api-ninjas.com/v1/holidays?country={country}&year={year}&type=national_holiday";
-            string QUERY_URL_ORTHODOX = $"https://api.api-ninjas.com/v1/holidays?country={country}&year={year}&type=national_holiday_orthodox";
+
+            string QUERY_URL_NATIONAL = $"https://api.api-ninjas.com/v1/holidays?country={Countries.Romania}&year={year}&type=national_holiday";
+            string QUERY_URL_ORTHODOX = $"https://api.api-ninjas.com/v1/holidays?country={Countries.Romania}&year={year}&type=national_holiday_orthodox";
 
             var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
 
@@ -72,9 +74,9 @@ namespace VacationModule.Services.Implementations
             return nationalHolidayDTOs;
         }
 
-        public async Task<List<DateTime>> holidayList()
+        public async Task<List<DateTime>> holidayList(int year)
         {
-            List<NationalHolidayDTO> nationalHolidaysDTO = await nationalHolidays("RO", 2023);
+            List<NationalHolidayDTO> nationalHolidaysDTO = await nationalHolidays(year);
 
 
             List<DateTime> holidaysList = new List<DateTime>();

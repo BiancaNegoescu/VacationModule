@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace VacationModule.Services.Constants
 {
-    public class AvailableDaysPerYear
+    public static class Year
     {
-        public static readonly int Amount = 25;
+        public static readonly int CurrentYear = DateTime.Now.Year; 
     }
 }

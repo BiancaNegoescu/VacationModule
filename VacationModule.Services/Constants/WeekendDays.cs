@@ -8,6 +8,6 @@ namespace VacationModule.Services.Constants
 {
     public static class WeekendDays
     {
-       public static String[] weekend = { "Saturday", "Sunday" };
+       public static readonly String[] weekend = { "Saturday", "Sunday" };
     }
 }
